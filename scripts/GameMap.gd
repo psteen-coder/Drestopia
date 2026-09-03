@@ -18,7 +18,7 @@ signal turn_changed(turn_number)
 func _ready():
     generate_map()
     spawn_starting_units()
-    print("Phase 2 Factions started: Multiple unit types added")
+    print("Phase 2 Factions: All core factions represented")
     turn_changed.emit(current_turn)
 
 func generate_map():
@@ -50,14 +50,24 @@ func get_tile(q: int, r: int):
     return tiles.get(Vector2i(q, r))
 
 func spawn_starting_units():
-    # White Council - Warden
+    # White Council
     spawn_unit(0, 0, "Warden", 3, 2, "White Council", "")
+    spawn_unit(1, -1, "Wizard", 2, 2, "White Council", "")
     
-    # Grey Council - Saboteur
-    spawn_unit(2, 1, "Saboteur", 2, 3, "Grey Council", "veil")
+    # Grey Council
+    spawn_unit(3, 0, "Saboteur", 2, 3, "Grey Council", "veil")
     
-    # White Court - Psychic
-    spawn_unit(-1, 2, "Psychic Vampire", 2, 2, "White Court", "psychic_drain")
+    # White Court
+    spawn_unit(-2, 1, "Psychic Vampire", 2, 2, "White Court", "psychic_drain")
+    
+    # Winter Court
+    spawn_unit(0, 3, "Frost Sidhe", 3, 2, "Winter Court", "frost_slow")
+    
+    # Summer Court
+    spawn_unit(-3, 2, "Dryad", 2, 3, "Summer Court", "nature_growth")
+    
+    # Red Court
+    spawn_unit(4, -1, "Red Court Infected", 4, 1, "Red Court", "blood_drain")
 
 func spawn_unit(q, r, name, strength, movement, faction, ability):
     var unit = unit_scene.instantiate()
@@ -132,8 +142,12 @@ func get_unit_at(q: int, r: int):
 func resolve_combat(attacker, defender):
     print(attacker.unit_name, " attacks ", defender.unit_name)
     var attack_power = attacker.strength
+    
     if attacker.ability == "psychic_drain":
         attack_power += 1
+    if attacker.ability == "frost_slow":
+        defender.movement_range = max(1, defender.movement_range - 1)
+    
     if attack_power > defender.strength:
         defender.queue_free()
         units.erase(defender)
