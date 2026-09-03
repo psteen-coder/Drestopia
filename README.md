@@ -1,10 +1,17 @@
-# Dresden-Polytopia
+# Drestopia
 
 Dresden Files themed Polytopia-style 4X-lite turn-based strategy game for Android.
 
-**Playable Tribes (MVP)**: White Council (default), Grey Council, White Court, Winter Court, Summer Court, Red Court
+**Playable Factions** (shared tech trees):
+- Wizards (White Council + Grey Council)
+- Vampires (White Court + Red Court)
+- Fae (Summer Court + Winter Court)
+- Sacred (Denarians + Knights of the Cross)
 
-**Engine**: Godot 4 (GDScript)
-**Status**: Kanban tickets created. Kernel phase starting.
+**Resources**: Energy + Knowledge
 
-See .hermes/tasks for full roadmap.
+**Engine**: Godot 4
+
+**Repo**: https://github.com/psteen-coder/Drestopia
+
+See Kanban for full roadmap.

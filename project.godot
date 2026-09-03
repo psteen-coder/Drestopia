@@ -1,6 +1,6 @@
 [application]
 
-config/name="Dresden Polytopia"
+config/name="Drestopia"
 config/description="Dresden Files themed Polytopia-style turn-based strategy game"
 config/version="0.1.0"
 run/main_scene="res://scenes/GameMap.tscn"
