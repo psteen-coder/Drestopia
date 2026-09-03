@@ -3,7 +3,7 @@
 config/name="Dresden Polytopia"
 config/description="Dresden Files themed Polytopia-style turn-based strategy game"
 config/version="0.1.0"
-run/main_scene="res://scenes/Main.tscn"
+run/main_scene="res://scenes/GameMap.tscn"
 config/features=PackedStringArray("4.3", "Forward Plus")
 config/icon="res://icon.svg"
 
