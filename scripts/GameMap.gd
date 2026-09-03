@@ -17,8 +17,8 @@ signal turn_changed(turn_number)
 
 func _ready():
     generate_map()
-    spawn_starting_unit()
-    print("Phase 1 Kernel: Hex map + turns + units + cities ready")
+    spawn_starting_units()
+    print("Phase 2 Factions started: Multiple unit types added")
     turn_changed.emit(current_turn)
 
 func generate_map():
@@ -49,12 +49,26 @@ func get_terrain_type(q: int, r: int) -> String:
 func get_tile(q: int, r: int):
     return tiles.get(Vector2i(q, r))
 
-func spawn_starting_unit():
+func spawn_starting_units():
+    # White Council - Warden
+    spawn_unit(0, 0, "Warden", 3, 2, "White Council", "")
+    
+    # Grey Council - Saboteur
+    spawn_unit(2, 1, "Saboteur", 2, 3, "Grey Council", "veil")
+    
+    # White Court - Psychic
+    spawn_unit(-1, 2, "Psychic Vampire", 2, 2, "White Court", "psychic_drain")
+
+func spawn_unit(q, r, name, strength, movement, faction, ability):
     var unit = unit_scene.instantiate()
-    unit.current_q = 0
-    unit.current_r = 0
-    unit.position = hex_to_pixel(0, 0)
-    unit.owner_faction = "White Council"
+    unit.current_q = q
+    unit.current_r = r
+    unit.position = hex_to_pixel(q, r)
+    unit.unit_name = name
+    unit.strength = strength
+    unit.movement_range = movement
+    unit.owner_faction = faction
+    unit.ability = ability
     $Units.add_child(unit)
     units.append(unit)
 
@@ -117,7 +131,10 @@ func get_unit_at(q: int, r: int):
 
 func resolve_combat(attacker, defender):
     print(attacker.unit_name, " attacks ", defender.unit_name)
-    if attacker.strength > defender.strength:
+    var attack_power = attacker.strength
+    if attacker.ability == "psychic_drain":
+        attack_power += 1
+    if attack_power > defender.strength:
         defender.queue_free()
         units.erase(defender)
         attacker.move_to(defender.current_q, defender.current_r, self)
@@ -128,7 +145,6 @@ func resolve_combat(attacker, defender):
         print("Defender wins!")
 
 func found_city_at(q: int, r: int):
-    # Check if tile is empty
     if get_unit_at(q, r) or get_city_at(q, r):
         print("Cannot found city here")
         return
