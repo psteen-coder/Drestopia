@@ -5,10 +5,15 @@ extends Node2D
 
 var hex_tile_scene = preload("res://scenes/HexTile.tscn")
 var tiles = {}
+var current_turn: int = 1
+var is_player_turn: bool = true
+
+signal turn_changed(turn_number)
 
 func _ready():
     generate_map()
-    print("Phase 1 Kernel: Hex map generated with ", tiles.size(), " tiles")
+    print("Phase 1 Kernel: Hex map + basic turns ready")
+    turn_changed.emit(current_turn)
 
 func generate_map():
     for q in range(-map_radius, map_radius + 1):
@@ -37,3 +42,14 @@ func get_terrain_type(q: int, r: int) -> String:
 
 func get_tile(q: int, r: int):
     return tiles.get(Vector2i(q, r))
+
+func end_turn():
+    if is_player_turn:
+        is_player_turn = false
+        current_turn += 1
+        print("Turn ", current_turn, " started (AI would play here)")
+        turn_changed.emit(current_turn)
+        # For now, immediately give turn back to player (single player testing)
+        await get_tree().create_timer(0.5).timeout
+        is_player_turn = true
+        print("Player turn again (testing mode)")
