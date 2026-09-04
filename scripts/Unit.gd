@@ -21,6 +21,16 @@ func update_visual():
         rect.color = Color(0.3, 0.3, 0.5)
     elif owner_faction == "White Court":
         rect.color = Color(0.8, 0.2, 0.5)
+    elif owner_faction == "Winter Court":
+        rect.color = Color(0.4, 0.7, 0.9)  # Icy blue
+    elif owner_faction == "Summer Court":
+        rect.color = Color(0.2, 0.7, 0.3)  # Green
+    elif owner_faction == "Red Court":
+        rect.color = Color(0.7, 0.1, 0.1)  # Blood red
+    elif owner_faction == "Denarians":
+        rect.color = Color(0.6, 0.6, 0.7)  # Silver-gray
+    elif owner_faction == "Knights of the Cross":
+        rect.color = Color(0.9, 0.8, 0.2)  # Gold
     else:
         rect.color = Color(0.5, 0.5, 0.5)
 

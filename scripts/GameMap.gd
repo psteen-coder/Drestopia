@@ -18,7 +18,7 @@ signal turn_changed(turn_number)
 func _ready():
     generate_map()
     spawn_starting_units()
-    print("Phase 2 Factions: All core factions with unique starting bonuses")
+    print("Phase 3 Factions & Abilities: Full faction support including Denarians and Knights of the Cross")
     turn_changed.emit(current_turn)
 
 func generate_map():
@@ -70,6 +70,12 @@ func spawn_starting_units():
     
     # === Red Court - Aggressive ===
     spawn_unit(5, -2, "Red Court Infected", 4, 1, "Red Court", "blood_drain")
+
+    # === Denarians - Spying & strong but slow ===
+    spawn_unit(-5, 0, "Denarian Agent", 5, 1, "Denarians", "veil")
+
+    # === Knights of the Cross - Holy counter ===
+    spawn_unit(-4, -1, "Knight of the Cross", 3, 2, "Knights of the Cross", "holy_purge")
 
 func spawn_unit(q, r, name, strength, movement, faction, ability):
     var unit = unit_scene.instantiate()
@@ -151,6 +157,12 @@ func resolve_combat(attacker, defender):
         defender.movement_range = max(1, defender.movement_range - 1)
     if attacker.ability == "blood_drain":
         attack_power += 1
+    if attacker.ability == "veil":
+        attack_power += 2  # Subversion bonus
+    if attacker.ability == "nature_growth":
+        attack_power += 1  # Nature synergy
+    if attacker.ability == "holy_purge":  # For Knights
+        attack_power += 2
     
     if attack_power > defender.strength:
         defender.queue_free()
